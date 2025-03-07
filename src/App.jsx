@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import UploadAndDisplayImage from "./components/UploadAndDisplayImage";
-import * as PredictionApi from "@azure/cognitiveservices-customvision-prediction";
-import * as msRest from "@azure/ms-rest-js";
 
 function App() {
   // retrieve environment variables
@@ -15,14 +13,6 @@ function App() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [prediction, setPrediction] = useState({});
 
-  const predictor_credentials = new msRest.ApiKeyCredentials({
-    inHeader: { "Prediction-key": predictionKey },
-  });
-  const predictor = new PredictionApi.PredictionAPIClient(
-    predictor_credentials,
-    predictionEndpoint
-  );
-
   function uploadImage(event) {
     //console.log(event.target.files[0]); // Log the selected file
     setSelectedImage(event.target.files[0]); // Update the state with the selected file
@@ -32,7 +22,6 @@ function App() {
     makePrediction();
   }, [selectedImage]);
 
-  useEffect;
   async function makePrediction() {
     const rawData = await fetch(predictionEndpoint, {
       method: "POST",
